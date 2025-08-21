@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Personal Career Advisor</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>AI Personal Career Advisor</h1>
+    <div class="subtitle">Enter your profile. The advisor accounts for trends in the Indian job market and emerging roles.</div>
+    <div class="grid">
+      <form class="card" onsubmit="submitForm(event)">
+        <div class="row">
+          <div>
+            <label for="degree">Degree</label>
+            <input id="degree" placeholder="B.Tech / B.Sc / MBA / ..." required />
+          </div>
+          <div>
+            <label for="major">Major/Discipline</label>
+            <input id="major" placeholder="Computer Science, ECE, Commerce, ..." required />
+          </div>
+        </div>
+
+        <div class="row">
+          <div>
+            <label for="gradYear">Graduation Year</label>
+            <input id="gradYear" type="number" placeholder="2026" required />
+          </div>
+          <div>
+            <label for="cgpa">CGPA</label>
+            <input id="cgpa" type="text" placeholder="8.2" required />
+          </div>
+        </div>
+
+        <label for="skills">Skills (hard + soft)</label>
+        <textarea id="skills" placeholder="Python, SQL, Excel, Communication, ..." required></textarea>
+
+        <label for="interests">Interests</label>
+        <textarea id="interests" placeholder="What you enjoy learning/doing" required></textarea>
+
+        <label for="goals">Career Goals (target roles/industry)</label>
+        <input id="goals" placeholder="Data roles in healthcare / Product management / ..." required />
+
+        <div class="row">
+          <div>
+            <label for="location">Preferred Location</label>
+            <input id="location" placeholder="Bengaluru / Remote / ..." />
+          </div>
+          <div>
+            <label for="timeframe">Timeframe</label>
+            <input id="timeframe" placeholder="6-12 months" />
+          </div>
+        </div>
+
+        <details>
+          <summary class="muted">Optional Details</summary>
+          <label for="projects">Projects</label>
+          <textarea id="projects" placeholder="Links or summaries of projects"></textarea>
+
+          <label for="internships">Internships</label>
+          <textarea id="internships" placeholder="Company, role, duration"></textarea>
+
+          <label for="portfolio">Portfolio Links</label>
+          <input id="portfolio" placeholder="GitHub/Portfolio/LinkedIn URLs" />
+
+          <label for="constraints">Constraints</label>
+          <input id="constraints" placeholder="Visa, relocation, financial" />
+
+          <label for="companyType">Preferred Company Type</label>
+          <input id="companyType" placeholder="Startup / Big Tech / Impact" />
+        </details>
+
+        <div class="actions">
+          <button id="submitBtn" type="submit">Get Career Advice</button>
+        </div>
+      </form>
+
+      <div class="result">
+        <h3>Dashboard</h3>
+        <div class="muted">Top 3 career paths, reasoning, required skills, and learning resources</div>
+        <div id="resultCards" class="career-grid"></div>
+        <pre id="result" style="display:none"></pre>
+      </div>
+    </div>
+  </div>
+  <div id="prepModal" class="modal-backdrop" onclick="if(event.target.id==='prepModal') closeModal()">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 id="modalTitle">Preparation Plan</h3>
+        <button class="close-btn" onclick="closeModal()">Close</button>
+      </div>
+      <pre id="modalContent"></pre>
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
