@@ -1,9 +1,10 @@
-import OpenAI from "openai";
+import dotenv from "dotenv";
+dotenv.config();
 
 function createClient() {
-  const apiKey = process.env.OPENAI_API_KEY;
+  const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) return null;
-  return new OpenAI({ apiKey });
+  return apiKey;
 }
 
 function buildAdvicePrompt(profile) {
@@ -87,36 +88,59 @@ Title: Preparation Plan for [Role]
 - By Day 90: ...`;
 }
 
+async function callGeminiAPI(apiKey, prompt) {
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+  
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      contents: [{
+        parts: [{
+          text: prompt
+        }]
+      }]
+    })
+  });
+
+  if (!response.ok) {
+    throw new Error(`Gemini API error: ${response.status} ${response.statusText}`);
+  }
+
+  const data = await response.json();
+  return data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+}
+
 export async function generateAdvice(profile) {
   const prompt = buildAdvicePrompt(profile);
-  const client = createClient();
-  if (!client) {
+  const apiKey = createClient();
+  if (!apiKey) {
     return '';
   }
-  const response = await client.chat.completions.create({
-    model: "gpt-4o",
-    messages: [
-      { role: "system", content: "You are a concise, structured, and practical career advisor." },
-      { role: "user", content: prompt }
-    ],
-    temperature: 0.3
-  });
-  return response.choices[0]?.message?.content?.trim() || '';
+  
+  try {
+    const result = await callGeminiAPI(apiKey, prompt);
+    return result.trim();
+  } catch (error) {
+    console.error('Gemini API error:', error);
+    throw error;
+  }
 }
 
 export async function generatePrep(profile, role) {
   const prompt = buildPrepPrompt(profile, role);
-  const client = createClient();
-  if (!client) {
+  const apiKey = createClient();
+  if (!apiKey) {
     return '';
   }
-  const response = await client.chat.completions.create({
-    model: "gpt-4o",
-    messages: [
-      { role: "system", content: "You are a concise, structured, and practical career advisor." },
-      { role: "user", content: prompt }
-    ],
-    temperature: 0.3
-  });
-  return response.choices[0]?.message?.content?.trim() || '';
+  
+  try {
+    const result = await callGeminiAPI(apiKey, prompt);
+    return result.trim();
+  } catch (error) {
+    console.error('Gemini API error:', error);
+    throw error;
+  }
 }

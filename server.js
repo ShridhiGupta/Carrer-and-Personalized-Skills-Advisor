@@ -1,9 +1,8 @@
 import express from 'express';
 import cors from 'cors';
-import dotenv from "dotenv";
+import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import OpenAI from 'openai';
 import { generateAdvice, generatePrep } from './openai.js';
 
 dotenv.config();
@@ -16,48 +15,13 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
-const openaiApiKey = process.env.OPENAI_API_KEY;
-const openai = openaiApiKey ? new OpenAI({ apiKey: openaiApiKey }) : null;
-
-console.log("API Key:", process.env.OPENAI_API_KEY);
+const geminiApiKey = process.env.GEMINI_API_KEY;
 
 app.post('/api/advice', async (req, res) => {
   try {
     const profile = req.body;
 
-    const prompt = `You are an expert career advisor focusing on the Indian job market. A student has provided their profile. Based on their education, skills, and interests, suggest:
-
-1. Top 3 suitable career paths for them.
-2. Why each career path is suitable (2-3 sentences).
-3. Key skills they need to develop for each career.
-4. Learning resources (free or popular platforms) for each skill.
-
-Student Profile:
-- Education: ${profile.education || ''}
-- Skills: ${profile.skills || ''}
-- Interests: ${profile.interests || ''}
-- Career Goals: ${profile.careerGoals || ''}
-
-Consider current trends in the Indian job market and emerging roles when recommending careers and skills.
-
-Format the output clearly like this:
-
-Career Path 1: [Name]
-- Why suitable: ...
-- Required Skills: ...
-- Learning Resources: ...
-
-Career Path 2: [Name]
-- Why suitable: ...
-- Required Skills: ...
-- Learning Resources: ...
-
-Career Path 3: [Name]
-- Why suitable: ...
-- Required Skills: ...
-- Learning Resources: ...`;
-
-    if (!openai) {
+    if (!geminiApiKey) {
       const mock = `Career Path 1: Data Analyst
 - Why suitable: Leverages your quantitative background and interest in data storytelling. Strong demand across Indian IT services, startups, fintech, and healthcare.
 - Required Skills: SQL, Excel/Spreadsheets, Data Visualization (Power BI/Tableau), Python for data analysis, Business communication.
@@ -79,7 +43,8 @@ Career Path 3: AI/ML Associate (Applied)
     res.json({ result: text });
   } catch (error) {
     console.error('Advice error:', error);
-    res.status(500).json({ error: 'Failed to generate advice' });
+    const message = (error && (error.message || error.toString())) || 'Failed to generate advice';
+    res.status(500).json({ error: message });
   }
 });
 
@@ -87,52 +52,7 @@ app.post('/api/prep', async (req, res) => {
   try {
     const { profile, role } = req.body || {};
 
-    const prepPrompt = `You are an expert Indian job-market career coach. Create a crisp, actionable preparation plan for the role: "${role}".
-
-Student Profile:
-- Education: ${profile?.education || ''}
-- Skills: ${profile?.skills || ''}
-- Interests: ${profile?.interests || ''}
-- Career Goals: ${profile?.careerGoals || ''}
-
-Focus on India-specific realities (hiring patterns, certifications accepted locally, salary bands not needed). Keep it practical and short-bulleted.
-
-Return in this format:
-
-Title: Preparation Plan for [Role]
-
-1) 90-Day Roadmap (Weeks 1-12)
-- Week 1-2: ...
-- Week 3-4: ...
-...
-
-2) Portfolio Projects (3)
-- Project 1: ... (what to build, datasets/APIs, evaluation, expected outcome)
-- Project 2: ...
-- Project 3: ...
-
-3) Skills & Resources
-- Skill: [name] — Resources: [specific free/popular platforms]
-- Skill: ...
-
-4) Certifications (Optional, India-relevant)
-- ...
-
-5) Interview Prep
-- Topics: ...
-- Question types: ...
-- Practice sources: ...
-
-6) Target Companies & Roles (India)
-- Companies: ...
-- Sample job titles: ...
-
-7) Milestones & Checkpoints
-- By Day 30: ...
-- By Day 60: ...
-- By Day 90: ...`;
-
-    if (!openai) {
+    if (!geminiApiKey) {
       const mock = `Title: Preparation Plan for ${role || 'Target Role'}
 
 1) 90-Day Roadmap (Weeks 1-12)
@@ -177,7 +97,8 @@ Title: Preparation Plan for [Role]
     res.json({ result: text });
   } catch (error) {
     console.error('Prep error:', error);
-    res.status(500).json({ error: 'Failed to generate preparation plan' });
+    const message = (error && (error.message || error.toString())) || 'Failed to generate preparation plan';
+    res.status(500).json({ error: message });
   }
 });
 
