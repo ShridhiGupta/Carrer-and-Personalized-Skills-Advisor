@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Personal Career Advisor</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="container">
+    <!-- Theme Toggle -->
+    <div class="theme-toggle">
+      <button id="themeToggle" class="theme-btn" title="Toggle dark/light mode">
+        <span class="theme-icon">🌙</span>
+        <span class="theme-text">Dark Mode</span>
+      </button>
+    </div>
+    
+    <h1>AI Personal Career Advisor</h1>
+    <div class="subtitle">Get personalized career guidance through conversation or detailed profile analysis</div>
+    
+    <!-- Chatbot Section -->
+    <div class="chatbot-section">
+      <h2>💬 AI Career Mentor Chat</h2>
+      <p class="chat-subtitle">Ask me anything about careers! Try questions like:</p>
+      <div class="example-questions">
+        <span class="example-question">"What career suits me if I like coding but not maths?"</span>
+        <span class="example-question">"If I pursue Data Science vs. Cybersecurity, where will I be in 5 years?"</span>
+        <span class="example-question">"What skills do I need for a career in AI?"</span>
+      </div>
+      
+      <div class="chat-container">
+        <div id="chatMessages" class="chat-messages">
+          <div class="message bot-message">
+            <div class="message-content">
+              <strong>AI Mentor:</strong> Hi! I'm your AI career mentor. I can help you explore career paths, compare options, and answer any questions about your professional future. What would you like to know?
+            </div>
+          </div>
+        </div>
+        
+        <div class="chat-input-container">
+          <input 
+            type="text" 
+            id="chatInput" 
+            placeholder="Ask me about careers, skills, or career paths..." 
+            class="chat-input"
+          />
+          <button id="sendChatBtn" class="send-btn">Send</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider">
+      <span>OR</span>
+    </div>
+
+    <!-- Skills Gap Analysis Section -->
+    <div class="skills-analysis-section">
+      <h2>🔍 Skills Gap Analysis</h2>
+      <p class="skills-subtitle">Get a personalized skills assessment and learning roadmap for your target career</p>
+      
+      <div class="skills-form-container">
+        <div class="skills-input-group">
+          <label for="currentSkills">Your Current Skills</label>
+          <textarea 
+            id="currentSkills" 
+            placeholder="List your current skills (e.g., Python, SQL, Excel, Communication, Problem Solving...)"
+            rows="4"
+          ></textarea>
+          <small class="skills-hint">Separate skills with commas or new lines</small>
+        </div>
+        
+        <div class="skills-input-group">
+          <label for="targetCareer">Target Career Path</label>
+          <div id="careerTags" class="tag-list">
+            <span class="tag" data-value="data-scientist">Data Scientist</span>
+            <span class="tag" data-value="software-developer">Software Developer</span>
+            <span class="tag" data-value="product-manager">Product Manager</span>
+            <span class="tag" data-value="cybersecurity-analyst">Cybersecurity Analyst</span>
+            <span class="tag" data-value="ai-engineer">AI Engineer</span>
+            <span class="tag" data-value="devops-engineer">DevOps Engineer</span>
+            <span class="tag" data-value="ui-ux-designer">UI/UX Designer</span>
+            <span class="tag" data-value="business-analyst">Business Analyst</span>
+            <span class="tag" data-value="cloud-architect">Cloud Architect</span>
+            <span class="tag" data-value="data-engineer">Data Engineer</span>
+          </div>
+          <select id="targetCareer" class="career-select" style="display:none;">
+            <option value="">Select a career path</option>
+            <option value="data-scientist">Data Scientist</option>
+            <option value="software-developer">Software Developer</option>
+            <option value="product-manager">Product Manager</option>
+            <option value="cybersecurity-analyst">Cybersecurity Analyst</option>
+            <option value="ai-engineer">AI Engineer</option>
+            <option value="devops-engineer">DevOps Engineer</option>
+            <option value="ui-ux-designer">UI/UX Designer</option>
+            <option value="business-analyst">Business Analyst</option>
+            <option value="cloud-architect">Cloud Architect</option>
+            <option value="data-engineer">Data Engineer</option>
+          </select>
+        </div>
+        
+        <div class="skills-input-group">
+          <label for="experienceLevel">Experience Level</label>
+          <div id="experienceTags" class="tag-list">
+            <span class="tag" data-value="beginner">Beginner (0-1 years)</span>
+            <span class="tag" data-value="intermediate">Intermediate (1-3 years)</span>
+            <span class="tag" data-value="advanced">Advanced (3+ years)</span>
+          </div>
+          <select id="experienceLevel" class="experience-select" style="display:none;">
+            <option value="beginner">Beginner (0-1 years)</option>
+            <option value="intermediate">Intermediate (1-3 years)</option>
+            <option value="advanced">Advanced (3+ years)</option>
+          </select>
+        </div>
+        
+        <div class="skills-actions">
+          <button id="analyzeSkillsBtn" class="analyze-btn">
+            <span class="btn-icon">📊</span>
+            Analyze Skills Gap
+          </button>
+        </div>
+      </div>
+      
+      <!-- Skills Analysis Results -->
+      <div id="skillsResults" class="skills-results" style="display: none;">
+        <div class="results-header">
+          <h3>🎯 Your Skills Gap Analysis</h3>
+          <p class="target-career-info"></p>
+        </div>
+        
+        <div class="skills-overview">
+          <div class="skill-metrics">
+            <div class="metric-card">
+              <div class="metric-value" id="currentSkillCount">0</div>
+              <div class="metric-label">Current Skills</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-value" id="requiredSkillCount">0</div>
+              <div class="metric-label">Required Skills</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-value" id="skillMatchPercentage">0%</div>
+              <div class="metric-label">Match Rate</div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="skills-breakdown">
+          <div class="skills-category">
+            <h4>✅ Skills You Already Have</h4>
+            <div id="existingSkills" class="skills-list"></div>
+          </div>
+          
+          <div class="skills-category">
+            <h4>🚀 Skills to Develop</h4>
+            <div id="missingSkills" class="skills-list"></div>
+          </div>
+        </div>
+        
+        <div class="learning-roadmap">
+          <h4>📚 Personalized Learning Roadmap</h4>
+          <div class="roadmap-tabs">
+            <button class="tab-btn active" data-tab="short-term">Short Term (3-6 months)</button>
+            <button class="tab-btn" data-tab="long-term">Long Term (6-12 months)</button>
+          </div>
+          
+          <div class="tab-content active" id="short-term-content">
+            <div id="shortTermRoadmap" class="roadmap-content"></div>
+          </div>
+          
+          <div class="tab-content" id="long-term-content">
+            <div id="longTermRoadmap" class="roadmap-content"></div>
+          </div>
+        </div>
+        
+        <div class="certifications-section">
+          <h4>🏆 Recommended Certifications</h4>
+          <div class="certification-grid" id="certificationGrid"></div>
+        </div>
+        
+        <div class="skills-actions">
+          <button id="generateReportBtn" class="report-btn">
+            <span class="btn-icon">📄</span>
+            Generate Detailed Report
+          </button>
+          <button id="resetSkillsBtn" class="reset-btn">
+            <span class="btn-icon">🔄</span>
+            Start New Analysis
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider">
+      <span>OR</span>
+    </div>
+
+    <div class="subtitle">Get detailed career analysis by filling out your complete profile</div>
+    <div class="grid">
+      <form class="card" onsubmit="submitForm(event)">
+        <div class="row">
+          <div>
+            <label for="degree">Degree</label>
+            <input id="degree" placeholder="B.Tech / B.Sc / MBA / ..." required />
+          </div>
+          <div>
+            <label for="major">Major/Discipline</label>
+            <input id="major" placeholder="Computer Science, ECE, Commerce, ..." required />
+          </div>
+        </div>
+
+        <div class="row">
+          <div>
+            <label for="gradYear">Graduation Year</label>
+            <input id="gradYear" type="number" placeholder="2026" required />
+          </div>
+          <div>
+            <label for="cgpa">CGPA</label>
+            <input id="cgpa" type="text" placeholder="8.2" required />
+          </div>
+        </div>
+
+        <label for="skills">Skills (hard + soft)</label>
+        <textarea id="skills" placeholder="Python, SQL, Excel, Communication, ..." required></textarea>
+
+        <label for="interests">Interests</label>
+        <textarea id="interests" placeholder="What you enjoy learning/doing" required></textarea>
+
+        <label for="goals">Career Goals (target roles/industry)</label>
+        <input id="goals" placeholder="Data roles in healthcare / Product management / ..." required />
+
+        <div class="row">
+          <div>
+            <label for="location">Preferred Location</label>
+            <input id="location" placeholder="Bengaluru / Remote / ..." />
+          </div>
+          <div>
+            <label for="timeframe">Timeframe</label>
+            <input id="timeframe" placeholder="6-12 months" />
+          </div>
+        </div>
+
+        <details>
+          <summary class="muted">Optional Details</summary>
+          <label for="projects">Projects</label>
+          <textarea id="projects" placeholder="Links or summaries of projects"></textarea>
+
+          <label for="internships">Internships</label>
+          <textarea id="internships" placeholder="Company, role, duration"></textarea>
+
+          <label for="portfolio">Portfolio Links</label>
+          <input id="portfolio" placeholder="GitHub/Portfolio/LinkedIn URLs" />
+
+          <label for="constraints">Constraints</label>
+          <input id="constraints" placeholder="Visa, relocation, financial" />
+
+          <label for="companyType">Preferred Company Type</label>
+          <input id="companyType" placeholder="Startup / Big Tech / Impact" />
+        </details>
+
+        <div class="actions">
+          <button id="submitBtn" type="submit">Get Career Advice</button>
+        </div>
+      </form>
+
+      <div class="result">
+        <h3>Dashboard</h3>
+        <div class="muted">Top 3 career paths, reasoning, required skills, and learning resources</div>
+        <div id="resultCards" class="career-grid"></div>
+        <pre id="result" style="display:none"></pre>
+      </div>
+    </div>
+
+    <div class="dashboard-landing card">
+      <h2>🎓 Welcome to Your Career Dashboard</h2>
+      <div class="dashboard-panels">
+        <div class="dashboard-panel recommendations-panel">
+          <h3>🔮 Career Path Recommendations</h3>
+          <ul id="dashboardCareerList">
+            <li>Loading recommendations...</li>
+          </ul>
+        </div>
+        <div class="dashboard-panel skillgap-panel">
+          <h3>📈 Skill Gap Tracker</h3>
+          <div id="dashboardSkillGap">
+            <div class="skillgap-label">You are <span id="skillgapPercent">0%</span> ready to be a <span id="skillgapCareer">Data Analyst</span></div>
+            <div class="skillgap-bar-bg">
+              <div class="skillgap-bar" id="skillgapBar"></div>
+            </div>
+          </div>
+        </div>
+        <div class="dashboard-panel jobmarket-panel">
+          <h3>🌏 Job Market Snapshot</h3>
+          <div id="dashboardJobMarket">Loading market data...</div>
+        </div>
+      </div>
+      <div class="dashboard-actions">
+        <button onclick="switchToChatbot()" class="dashboard-action-btn">💬 Ask Career AI Mentor</button>
+        <button onclick="switchToMainForm()" class="dashboard-action-btn">📝 Fill Career Profile Form</button>
+        <button onclick="switchToSkillsAnalysis()" class="dashboard-action-btn">🔍 Skill Gap Analysis</button>
+      </div>
+    </div>
+  </div>
+  <div id="prepModal" class="modal-backdrop" onclick="if(event.target.id==='prepModal') closeModal()">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 id="modalTitle">Preparation Plan</h3>
+        <button class="close-btn" onclick="closeModal()">Close</button>
+      </div>
+      <pre id="modalContent"></pre>
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>

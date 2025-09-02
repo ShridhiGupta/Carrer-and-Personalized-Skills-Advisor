@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Career AI Mentor Chat</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- Theme Toggle -->
+  <div class="theme-toggle">
+    <button id="themeToggle" class="theme-btn" title="Toggle dark/light mode">
+      <span class="theme-icon">🌙</span>
+      <span class="theme-text">Dark Mode</span>
+    </button>
+  </div>
+  <div class="container">
+    <div class="chatbot-section">
+      <h2>💬 AI Career Mentor Chat</h2>
+      <p class="chat-subtitle">Ask me anything about careers! Try questions like:</p>
+      <div class="example-questions">
+        <span class="example-question">"What career suits me if I like coding but not maths?"</span>
+        <span class="example-question">"If I pursue Data Science vs. Cybersecurity, where will I be in 5 years?"</span>
+        <span class="example-question">"What skills do I need for a career in AI?"</span>
+      </div>
+      <div class="chat-container">
+        <div id="chatMessages" class="chat-messages">
+          <div class="message bot-message">
+            <div class="message-content">
+              <strong>AI Mentor:</strong> Hi! I'm your AI career mentor. I can help you explore career paths, compare options, and answer any questions about your professional future. What would you like to know?
+            </div>
+          </div>
+        </div>
+        <div class="chat-input-container">
+          <input 
+            type="text" 
+            id="chatInput" 
+            placeholder="Ask me about careers, skills, or career paths..." 
+            class="chat-input"
+          />
+          <button id="sendChatBtn" class="send-btn">Send</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>

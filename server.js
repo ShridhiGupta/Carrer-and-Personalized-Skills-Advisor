@@ -1,9 +1,10 @@
+// Gemini API integration for career advice and preparation plan
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { generateAdvice, generatePrep } from './openai.js';
+import { generateAdvice, generatePrep, generateChatResponse } from './gemini.js';
 
 dotenv.config();
 
@@ -98,6 +99,82 @@ app.post('/api/prep', async (req, res) => {
   } catch (error) {
     console.error('Prep error:', error);
     const message = (error && (error.message || error.toString())) || 'Failed to generate preparation plan';
+    res.status(500).json({ error: message });
+  }
+});
+
+app.post('/api/chat', async (req, res) => {
+  try {
+    const { message, chatHistory } = req.body;
+
+    if (!geminiApiKey) {
+      // Mock responses for common career questions
+      const mockResponses = {
+        'coding but not maths': 'Great question! If you enjoy coding but prefer to avoid heavy mathematics, consider these career paths:\n\n1. **Frontend Development** - Focus on user interfaces, design, and user experience\n2. **Web Development** - Build websites and web applications with minimal math\n3. **DevOps Engineering** - Infrastructure and deployment automation\n4. **Technical Writing** - Documentation and technical communication\n5. **Product Management** - Bridge between technical and business teams\n\nThese roles emphasize creativity, problem-solving, and technical skills without requiring advanced mathematics.',
+        'data science vs cybersecurity': 'Excellent question! Let me break down where you might be in 5 years with each path:\n\n**Data Science Path (5 years):**\n- Senior Data Scientist or Lead Analyst\n- Working with machine learning models and business intelligence\n- Salary: $80K-150K+ depending on location and company\n- Roles: Data Science Manager, ML Engineer, Analytics Director\n\n**Cybersecurity Path (5 years):**\n- Senior Security Engineer or Security Architect\n- Leading security initiatives and threat response\n- Salary: $90K-160K+ with high demand\n- Roles: Security Manager, Penetration Tester, CISO\n\n**Key Differences:**\n- Data Science: More analytical, business-focused, requires statistics\n- Cybersecurity: More technical, incident response, constant learning\n\nBoth have excellent job security and growth potential!',
+        'ai career skills': 'To build a career in AI, focus on these core skills:\n\n**Technical Skills:**\n- Python programming (essential)\n- Machine Learning frameworks (TensorFlow, PyTorch)\n- Data manipulation (Pandas, NumPy)\n- Statistics and mathematics\n- Deep learning fundamentals\n\n**Practical Skills:**\n- Building and deploying ML models\n- Data preprocessing and feature engineering\n- Model evaluation and validation\n- Understanding business problems\n\n**Learning Path:**\n1. Start with Python and basic ML concepts\n2. Learn supervised/unsupervised learning\n3. Practice with real datasets (Kaggle)\n4. Build portfolio projects\n5. Specialize in areas like NLP, Computer Vision, or MLOps\n\n**Entry Points:**\n- Data Analyst → ML Engineer → AI Engineer\n- Software Developer → ML Developer → AI Developer\n- Research Assistant → ML Researcher → AI Researcher'
+      };
+
+      // Find best matching mock response
+      let bestResponse = 'I\'d be happy to help you with career guidance! Could you please provide more specific details about your interests, skills, or the career path you\'re considering?';
+      
+      for (const [key, response] of Object.entries(mockResponses)) {
+        if (message.toLowerCase().includes(key.toLowerCase())) {
+          bestResponse = response;
+          break;
+        }
+      }
+      
+      return res.json({ response: bestResponse });
+    }
+
+    const response = await generateChatResponse(message, chatHistory);
+    res.json({ response });
+  } catch (error) {
+    console.error('Chat error:', error);
+    const message = (error && (error.message || error.toString())) || 'Failed to generate chat response';
+    res.status(500).json({ error: message });
+  }
+});
+
+app.post('/api/skills-analysis', async (req, res) => {
+  try {
+    const { currentSkills, targetCareer, experienceLevel } = req.body;
+
+    if (!geminiApiKey) {
+      // Mock skills analysis response
+      const mockAnalysis = {
+        targetCareer: targetCareer,
+        experienceLevel: experienceLevel,
+        currentSkills: currentSkills.split(/[,\n]/).map(s => s.trim()).filter(s => s),
+        requiredSkills: ['python', 'sql', 'machine learning', 'data analysis', 'statistics'],
+        existingSkills: ['python', 'data analysis'],
+        missingSkills: ['sql', 'machine learning', 'statistics'],
+        matchPercentage: 40,
+        learningRoadmap: {
+          shortTerm: [
+            { skill: 'SQL', timeline: '3-4 months', resources: ['SQLBolt', 'Mode SQL Tutorial', 'Practice on Kaggle'] },
+            { skill: 'Machine Learning Basics', timeline: '4-6 months', resources: ['Coursera ML Course', 'Hands-on ML Book', 'Kaggle Competitions'] }
+          ],
+          longTerm: [
+            { skill: 'Advanced Statistics', timeline: '6-12 months', resources: ['Statistics Course', 'Research Papers', 'Real Projects'] }
+          ]
+        },
+        certifications: [
+          { name: 'Google Data Analytics Professional Certificate', provider: 'Coursera', price: 'Free', relevance: 'High' },
+          { name: 'IBM Data Science Professional Certificate', provider: 'Coursera', price: 'Free', relevance: 'High' }
+        ]
+      };
+      
+      return res.json({ analysis: mockAnalysis });
+    }
+
+    // Enhanced analysis using Gemini API
+    const enhancedAnalysis = await generateEnhancedSkillsAnalysis(currentSkills, targetCareer, experienceLevel);
+    res.json({ analysis: enhancedAnalysis });
+  } catch (error) {
+    console.error('Skills analysis error:', error);
+    const message = (error && (error.message || error.toString())) || 'Failed to generate skills analysis';
     res.status(500).json({ error: message });
   }
 });
