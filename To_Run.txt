@@ -1,1 +1,0 @@
-$env:PORT=3002; $env:GEMINI_API_KEY="AIzaSyBP5oKqDvp6ODugjvz8O8rB2_xvsMufiN0"; npm run dev
