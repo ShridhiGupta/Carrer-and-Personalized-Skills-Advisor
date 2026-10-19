@@ -75,7 +75,7 @@ An intelligent career guidance platform that combines conversational AI mentorin
 - Request detailed preparation plans for specific roles
 
 ### Theme Switching
-- Click the theme toggle button (🌙/☀️) in the top-right corner
+- Click the theme toggle button in the top-right corner
 - Switch between light and dark modes instantly
 - Your preference is automatically saved for future visits
 
