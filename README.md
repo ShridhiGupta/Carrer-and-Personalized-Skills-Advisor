@@ -4,13 +4,13 @@ An intelligent career guidance platform that combines conversational AI mentorin
 
 ## Features
 
-### 💬 AI Career Mentor Chat
+### AI Career Mentor Chat
 - **Conversational Career Guidance**: Ask questions like "What career suits me if I like coding but not maths?"
 - **Scenario Simulation**: Compare career paths like "Data Science vs. Cybersecurity - where will I be in 5 years?"
 - **Contextual Responses**: AI remembers conversation history for personalized advice
 - **Example Questions**: Click on suggested questions to get started quickly
 
-### 🔍 Skills Gap Analysis
+### Skills Gap Analysis
 - **Personalized Skills Assessment**: Compare your current skills vs. required skills for target careers
 - **Intelligent Gap Identification**: AI-powered analysis of skills overlap and missing competencies
 - **Learning Roadmaps**: Short-term (3-6 months) and long-term (6-12 months) skill development plans
@@ -18,13 +18,13 @@ An intelligent career guidance platform that combines conversational AI mentorin
 - **Experience-Based Analysis**: Tailored recommendations based on beginner, intermediate, or advanced levels
 - **Detailed Reports**: Generate comprehensive PDF-style reports for offline reference
 
-### 📊 Detailed Career Analysis
-- **Profile-Based Recommendations**: Get top 3 career paths based on your complete profile
+### Detailed Career Analysis
+- **Profile-Based Recommendations**: Get the top 3 career paths based on your complete profile
 - **Skills Assessment**: Identify required skills and learning resources for each path
 - **Preparation Plans**: 90-day roadmaps with portfolio projects and milestones
 - **Indian Job Market Focus**: Tailored advice considering local industry trends
 
-### 🌙 Dark Mode Support
+### Dark Mode Support
 - **Theme Toggle**: Switch between light and dark modes with a single click
 - **Persistent Settings**: Your theme preference is saved and restored automatically
 - **Responsive Design**: Beautiful UI that adapts to both light and dark themes
