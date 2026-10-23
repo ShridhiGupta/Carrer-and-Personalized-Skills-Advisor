@@ -1,4 +1,4 @@
-// Gemini API integration for career advice a
+// Gemini API integratio
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
